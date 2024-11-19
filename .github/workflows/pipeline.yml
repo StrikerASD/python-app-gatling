@@ -13,37 +13,37 @@ env:
 
 jobs:
   # Job 1: Terraform Deployment
-#  terraform:
-#    name: Deploy Infrastructure with Terraform
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      # Step 1: Check out the GKE repository (with Terraform code)
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#        with:
-#          repository: StrikerASD/python-app-gatling
-#          ref: main
-#
-#      # Step 2: Authenticate to GCP with Workload Identity Federation
-#      - name: Authenticate with GCP
-#        uses: google-github-actions/auth@v1
-#        with:
-#          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-#          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-#
-#      # Step 3: Set up Terraform
-#      - name: Set up Terraform
-#        uses: hashicorp/setup-terraform@v2
-#        with:
-#          cli_config_credentials_token: ${{ secrets.HASHICORP_TOKEN }}
-#
-#      # Step 4: Initialize and Apply Terraform
-#      - name: Terraform Init and Apply
-#        run: |
-#          terraform init
-#          terraform apply -auto-approve
-#        working-directory: terraform
+  terraform:
+    name: Deploy Infrastructure with Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the GKE repository (with Terraform code)
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: StrikerASD/python-app-gatling
+          ref: main
+
+      # Step 2: Authenticate to GCP with Workload Identity Federation
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      # Step 3: Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.HASHICORP_TOKEN }}
+
+      # Step 4: Initialize and Apply Terraform
+      - name: Terraform Init and Apply
+        run: |
+          terraform init
+          terraform apply -auto-approve
+        working-directory: terraform
 
   # Job 2: Gatling Load Test
   gatling:
