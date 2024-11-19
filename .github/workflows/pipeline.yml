@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: 'sb-izal-20241111-105308'
   PROJECT_NO: '544040256460'
-  GH_IDENTITY_POOL_ID: 'gh-identity-pool-third'
+  GH_IDENTITY_POOL_ID: 'gh-identity-pool'
 
 jobs:
   # Job: Gatling Load Test
