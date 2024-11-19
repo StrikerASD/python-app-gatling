@@ -1,4 +1,4 @@
-FROM ghcr.io/gatling/gatling:latest
+FROM ghcr.io/ladamalina/gatling:latest
 
 # Set the working directory
 WORKDIR /gatling
