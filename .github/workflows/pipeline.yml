@@ -1,6 +1,76 @@
-name: Load Test
-
+name: GKE cluster creation and gatling test
 on:
+  push:
+    branches:
+      - main
+env:
+  PROJECT_ID: 'sb-izal-20241111-105308'
+  PROJECT_NO: '544040256460'
+  GH_IDENTITY_POOL_ID: 'gh-identity-pool-third'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          create_credentials_file: 'true'
+          workload_identity_provider: 'projects/${{env.PROJECT_NO}}/locations/global/workloadIdentityPools/${{env.GH_IDENTITY_POOL_ID}}/providers/gh-provider'
+
+          # Below are from the above terraform code
+          # workloadIdentityPools = gh-identity-pool
+          # providers/gh-provider'
+
+          service_account: 'gcp-github-access@${{env.PROJECT_ID}}.iam.gserviceaccount.com'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform get
+        run:  terraform get -update=true
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init -upgrade
+
+      ### Info: Enable Compute Service Account is needed to enable default compute service account
+
+      #      - name: Enable Compute Service Account
+      #        run: |
+      #          gcloud iam service-accounts enable ${PROJECT_NUMBER}-compute@developer.gserviceaccount.com --project ${PROJECT_ID}
+      #        env:
+      #          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      #          PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
+
+      ### Info: For unlocking the state
+
+      #      - name: Remove Terraform Lock File
+      #        run: |
+      #          gsutil rm gs://gke_terraform_state_bucket-2247699754/terraform/state/default.tflock || true
+
+      - name: Terraform Plan
+        run: terraform -chdir=terraform plan -out=plan.out
+
+      #      - name: Terraform Apply
+      #        run: terraform -chdir=terraform apply --auto-approve plan.out
+
+      - name: Terraform Destroy
+        run: terraform -chdir=terraform destroy --auto-approve
+
+
   workflow_dispatch:
     inputs:
       target_url:
@@ -8,7 +78,7 @@ on:
         required: true
         default: "http://34.160.233.244"
 
-jobs:
+
   load-test:
     runs-on: ubuntu-latest
 
