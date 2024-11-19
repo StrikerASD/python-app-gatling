@@ -45,7 +45,7 @@ jobs:
         run: |
           docker run \
             -e BASE_URL=${{ secrets.BASE_URL }} \
-            europe-west3-docker.pkg.dev/sb-izal-20241111-105308/gatling-images/gatling:latest
+            europe-west3-docker.pkg.dev/sb-izal-20241111-105308/gatling-tests/gatling:latest
           
 
 
