@@ -31,6 +31,7 @@ jobs:
         with:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/${{env.PROJECT_NO}}/locations/global/workloadIdentityPools/${{env.GH_IDENTITY_POOL_ID}}/providers/gh-provider'
+          service_account: 'gcp-github-access@${{env.PROJECT_ID}}.iam.gserviceaccount.com'
 
       # Step 3: Configure Docker to use Artifact Registry
       - name: Configure Docker
