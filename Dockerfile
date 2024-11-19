@@ -1,4 +1,4 @@
-FROM nextmetaphor/alpine-java
+FROM ladamalina/gatling
 
 # Set the working directory
 WORKDIR /gatling
