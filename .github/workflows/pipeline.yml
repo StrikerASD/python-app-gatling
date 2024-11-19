@@ -6,7 +6,7 @@ on:
       target_url:
         description: "The URL of the application to test"
         required: true
-        default: "http://default-url"
+        default: "http://34.160.233.244"
 
 jobs:
   load-test:
@@ -30,5 +30,5 @@ jobs:
           docker run --rm \
             -e BASE_URL=$BASE_URL \
             -v $GITHUB_WORKSPACE/simulations:/gatling/simulations \
-            europe-west3-docker.pkg.dev/your-project/gatling-images/gatling:latest
+            europe-west3-docker.pkg.dev/sb-izal-20241111-105308/gatling-images/gatling:latest
 
