@@ -22,3 +22,4 @@ Here are the steps to build application:
    terraform init
    terraform plan
    terraform apply
+9. 
