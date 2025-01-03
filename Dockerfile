@@ -7,8 +7,9 @@ COPY target /opt/gatling/target
 # Ensure the Gatling binary is executable and set the working directory
 WORKDIR /opt/gatling
 
-# Define the entrypoint with an absolute path to the Gatling binary
-ENTRYPOINT ["./bin/gatling.sh"]
+# Define entrypoint and default command
+ENTRYPOINT ["/opt/gatling/bin/gatling.sh"]
+CMD ["-sf", "user-files/simulations", "-rf", "results", "-s", "LoadTest"]
 
 # Default command to run a specific simulation
-CMD ["-sf", "user-files/simulations", "-rf", "results", "-s", "LoadTest"]
+
