@@ -1,13 +1,14 @@
-FROM ladamalina/gatling
+FROM denvazh/gatling:latest
 
-# Set the working directory
-WORKDIR /gatling
+# Copy custom simulation files into the appropriate Gatling directory
+COPY user-files /opt/gatling/user-files
+COPY target /opt/gatling/target
 
-# Copy the Java simulation
-COPY LoadTest.java ./user-files/simulations/
+# Ensure the Gatling binary is executable and set the working directory
+WORKDIR /opt/gatling
 
-# Default environment variable for the base URL
-ENV BASE_URL="http://default-address"
+# Define the entrypoint with an absolute path to the Gatling binary
+ENTRYPOINT ["./bin/gatling.sh"]
 
-# Default command to run the Gatling simulation
-ENTRYPOINT ["gatling.sh", "-s", "LoadTest"]
+# Default command to run a specific simulation
+CMD ["-sf", "user-files/simulations", "-rf", "results", "-s", "LoadTest"]
