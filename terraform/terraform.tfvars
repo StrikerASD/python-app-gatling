@@ -1,1 +1,1 @@
-project_id = "sb-izal-20241111-105308"
+project_id = "sb-izal-20250103-132315"
