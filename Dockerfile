@@ -24,4 +24,4 @@ RUN echo "Kompilacja LoadTest.java" && \
     ls -l /opt/gatling/user-files/simulations
 RUN chmod -R 755 /opt/gatling/user-files/simulations
 
-ENTRYPOINT ["java", "-cp", "/opt/gatling/lib/*:/opt/gatling/user-files/simulations"]
+ENTRYPOINT ["java", "-cp", "/opt/gatling/lib/*:/opt/gatling/user-files/simulations", "simulations.LoadTest"]
