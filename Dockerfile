@@ -1,14 +1,28 @@
-FROM denvazh/gatling:latest
+# Używamy jdk zamiast jre, aby mieć dostęp do javac
+FROM openjdk:11-jdk-slim
 
-# Copy custom simulation files into the appropriate Gatling directory
-COPY LoadTest.java /opt/gatling
+# Install Gatling
+ENV GATLING_VERSION 3.7.4
+RUN mkdir -p /opt/gatling && \
+    cd /opt/gatling && \
+    wget -q -O gatling.zip https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/${GATLING_VERSION}/gatling-charts-highcharts-bundle-${GATLING_VERSION}-bundle.zip && \
+    unzip gatling.zip && \
+    rm gatling.zip && \
+    mv /opt/gatling/gatling-charts-highcharts-bundle-${GATLING_VERSION}/* /opt/gatling && \
+    rm -rf /opt/gatling/gatling-charts-highcharts-bundle-${GATLING_VERSION}
 
-# Ensure the Gatling binary is executable and set the working directory
+# Set Gatling home
+ENV GATLING_HOME /opt/gatling
+
+# Copy Gatling project
+COPY ./simulations /opt/gatling/user-files/simulations
+
+# Set working directory
 WORKDIR /opt/gatling
 
-# Define entrypoint and default command
-ENTRYPOINT ["/opt/gatling/bin/gatling.sh"]
-CMD ["-sf", "-rf", "results", "-s", "LoadTest"]
+# Compile Java files
+RUN javac -cp "/opt/gatling/lib/*" /opt/gatling/user-files/simulations/LoadTest.java
 
-# Default command to run a specific simulation
-
+# Entrypoint to run Gatling
+# Zakładając, że LoadTest.java jest w pakiecie simulations
+ENTRYPOINT ["java", "-cp", "/opt/gatling/lib/*:/opt/gatling/user-files/simulations", "simulations.LoadTest"]
