@@ -1,5 +1,8 @@
 FROM openjdk:11-jdk-slim
 
+# Instalacja wget
+RUN apt-get update && apt-get install -y wget unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 ENV GATLING_VERSION 3.7.4
 RUN mkdir -p /opt/gatling && \
     cd /opt/gatling && \
@@ -15,7 +18,6 @@ COPY ./simulations /opt/gatling/user-files/simulations
 
 WORKDIR /opt/gatling
 
-RUN ls -l /opt/gatling/lib
 RUN javac -cp "/opt/gatling/lib/*:/opt/gatling/lib/java/*" /opt/gatling/user-files/simulations/LoadTest.java && ls -l /opt/gatling/user-files/simulations
 RUN chmod -R 755 /opt/gatling/user-files/simulations
 
