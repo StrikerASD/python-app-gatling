@@ -18,12 +18,12 @@ COPY ./simulations /opt/gatling/user-files/simulations
 
 WORKDIR /opt/gatling
 
-ENTRYPOINT ["bash"]
-
 RUN ls -l /opt/gatling/lib
 RUN echo "Kompilacja LoadTest.java" && \
     javac -cp "/opt/gatling/lib/*" /opt/gatling/user-files/simulations/LoadTest.java && \
     ls -l /opt/gatling/user-files/simulations
 RUN chmod -R 755 /opt/gatling/user-files/simulations
+
+ENTRYPOINT ["bash"]
 
 #ENTRYPOINT ["java", "-cp", "/opt/gatling/lib/*:/opt/gatling/user-files/simulations", "simulations.LoadTest"]
