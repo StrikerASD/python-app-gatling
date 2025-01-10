@@ -25,4 +25,9 @@ public class LoadTest extends Simulation {
                 scn.injectOpen(atOnceUsers(1))
         ).protocols(httpProtocol);
     }
+
+    // Dodaj metodę main
+    public static void main(String[] args) {
+        Gatling.main(args);
+    }
 }
