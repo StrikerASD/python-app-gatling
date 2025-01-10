@@ -1,7 +1,5 @@
-# Używamy jdk zamiast jre, aby mieć dostęp do javac
 FROM openjdk:11-jdk-slim
 
-# Install Gatling
 ENV GATLING_VERSION 3.7.4
 RUN mkdir -p /opt/gatling && \
     cd /opt/gatling && \
@@ -11,18 +9,12 @@ RUN mkdir -p /opt/gatling && \
     mv /opt/gatling/gatling-charts-highcharts-bundle-${GATLING_VERSION}/* /opt/gatling && \
     rm -rf /opt/gatling/gatling-charts-highcharts-bundle-${GATLING_VERSION}
 
-# Set Gatling home
 ENV GATLING_HOME /opt/gatling
 
-# Copy Gatling project
 COPY ./simulations /opt/gatling/user-files/simulations
 
-# Set working directory
 WORKDIR /opt/gatling
 
-# Compile Java files
-RUN javac -cp "/opt/gatling/lib/*" /opt/gatling/user-files/simulations/LoadTest.java
+RUN javac -cp "/opt/gatling/lib/*" /opt/gatling/user-files/simulations/LoadTest.java && ls /opt/gatling/user-files/simulations
 
-# Entrypoint to run Gatling
-# Zakładając, że LoadTest.java jest w pakiecie simulations
 ENTRYPOINT ["java", "-cp", "/opt/gatling/lib/*:/opt/gatling/user-files/simulations", "simulations.LoadTest"]
