@@ -2,7 +2,7 @@ package simulations;
 
 import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.*;
-import io.gatling.app.Gatling; // Dodaj ten import
+import io.gatling.app.Gatling;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.*;
@@ -31,3 +31,4 @@ public class LoadTest extends Simulation {
         Gatling.main(args);
     }
 }
+
